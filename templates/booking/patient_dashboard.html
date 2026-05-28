@@ -1,0 +1,70 @@
+{% extends 'booking/base.html' %}
+{% block title %}Patient Dashboard | Health Nova{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold">Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
+            <p class="text-muted">Your appointment overview and recent activity are shown below.</p>
+        </div>
+        <a class="btn btn-outline-primary" href="{% url 'profile' %}">Edit Profile</a>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Total Appointments</p>
+                <h3>{{ total }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Upcoming</p>
+                <h3>{{ upcoming }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Completed</p>
+                <h3>{{ completed }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Cancelled</p>
+                <h3>{{ cancelled }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h4 class="mb-3">Appointment History</h4>
+            {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                                <tr>
+                                    <td>{{ appointment.doctor.doctor_name }}</td>
+                                    <td>{{ appointment.appointment_date }}</td>
+                                    <td>{{ appointment.appointment_time }}</td>
+                                    <td><span class="badge bg-secondary">{{ appointment.status }}</span></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No appointments yet. Browse doctors to book your first appointment.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

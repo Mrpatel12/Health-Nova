@@ -1,0 +1,82 @@
+{% extends 'booking/base.html' %}
+{% block title %}Edit User Account | Health Nova{% endblock %}
+{% block content %}
+<section class="py-5" style="max-width: 600px; margin: 0 auto;">
+    <div class="card shadow-lg border-0 p-4" style="border-radius: 16px;">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-1">Edit User Account</h2>
+            <p class="text-muted">Modify full name, contact, permissions, staff controls, or status constraints.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="text-danger small mt-1">{{ form.username.errors.as_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-secondary">First Name</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <div class="text-danger small mt-1">{{ form.first_name.errors.as_text }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-secondary">Last Name</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <div class="text-danger small mt-1">{{ form.last_name.errors.as_text }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary">Email Address</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-danger small mt-1">{{ form.email.errors.as_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary">Phone Number</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                    <div class="text-danger small mt-1">{{ form.phone.errors.as_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="card bg-light p-3 mb-4 border-0" style="border-radius: 12px;">
+                <h6 class="fw-bold mb-3"><i class="bi bi-shield-check me-2 text-primary"></i>Permissions & Status</h6>
+                
+                <div class="form-check mb-2">
+                    {{ form.is_staff }}
+                    <label class="form-check-label fw-semibold ms-2" for="id_is_staff">
+                        Is Staff / Professional
+                    </label>
+                    <div class="form-text text-muted small ms-4">Allows accessing dashboard panels or linking doctor credentials.</div>
+                </div>
+
+                <div class="form-check">
+                    {{ form.is_active }}
+                    <label class="form-check-label fw-semibold ms-2" for="id_is_active">
+                        Account Active
+                    </label>
+                    <div class="form-text text-muted small ms-4">Determines if this account can log in to the medical console.</div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between gap-3">
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-light flex-grow-1 py-2" style="border-radius: 8px;">Cancel</a>
+                <button type="submit" class="btn btn-primary flex-grow-1 py-2" style="border-radius: 8px;">Save Account</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

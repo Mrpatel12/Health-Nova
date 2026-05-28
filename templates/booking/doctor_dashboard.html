@@ -1,0 +1,81 @@
+{% extends 'booking/base.html' %}
+{% block title %}Doctor Dashboard | Health Nova{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold">Doctor Dashboard</h1>
+            <p class="text-muted">Manage appointment requests and update patient status.</p>
+        </div>
+        <div class="text-end">
+            <p class="mb-1">{{ doctor.doctor_name }}</p>
+            <p class="small text-muted mb-0">{{ doctor.specialization }}</p>
+        </div>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Pending</p>
+                <h3>{{ pending }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Approved</p>
+                <h3>{{ approved }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Completed</p>
+                <h3>{{ completed }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 p-4">
+                <p class="text-muted mb-1">Cancelled</p>
+                <h3>{{ cancelled }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h4 class="mb-3">Appointments</h4>
+            {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                                <tr>
+                                    <td>{{ appointment.patient.get_full_name|default:appointment.patient.username }}</td>
+                                    <td>{{ appointment.appointment_date }}</td>
+                                    <td>{{ appointment.appointment_time }}</td>
+                                    <td><span class="badge bg-secondary">{{ appointment.status }}</span></td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'doctor_action' appointment.id 'approve' %}" class="btn btn-sm btn-success">Approve</a>
+                                            <a href="{% url 'doctor_action' appointment.id 'complete' %}" class="btn btn-sm btn-primary">Complete</a>
+                                            <a href="{% url 'doctor_action' appointment.id 'reject' %}" class="btn btn-sm btn-danger">Reject</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No appointments are currently assigned. Check back soon.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

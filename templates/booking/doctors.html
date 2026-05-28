@@ -1,0 +1,90 @@
+{% extends 'booking/base.html' %}
+{% load static %}
+{% block title %}Doctors | Health Nova{% endblock %}
+{% block content %}
+<style>
+    .doctor-img {
+        height: 280px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .description-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.875rem;
+        color: #6c757d;
+        min-height: 38px;
+    }
+</style>
+<section class="py-5 doctors-hero text-white">
+    <div class="container">
+        <div class="mb-5">
+            <h1 class="display-5 fw-bold">Doctor Directory</h1>
+            <p class="lead text-white-50">Search specialists by name, specialization, and available appointment windows.</p>
+        </div>
+        <div class="hero-search p-4 mb-5">
+            <form class="row gx-3 gy-3 align-items-end" method="get">
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label text-muted">Doctor</label>
+                    <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search doctor name" />
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <label class="form-label text-muted">Specialization</label>
+                    <select class="form-select" name="specialization">
+                        <option value="">All Specializations</option>
+                        {% for option in specializations %}
+                            <option value="{{ option }}" {% if specialization == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label text-muted">Date</label>
+                    <input type="date" name="date" value="{{ date_value }}" class="form-control" />
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label text-muted">Time</label>
+                    <input type="time" name="time" value="{{ time_value }}" class="form-control" />
+                </div>
+                <div class="col-lg-1 col-md-12 d-grid">
+                    <button class="btn btn-primary w-100" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<section class="py-5">
+    <div class="row g-4">
+        {% for doctor in doctors %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100 hover-card">
+                    {% if doctor.profile_image %}
+                        <img src="{{ doctor.profile_image.url }}" class="card-img-top doctor-img" alt="{{ doctor.doctor_name }}" onerror="this.onerror=null;this.src='{% static "images/doctor-placeholder.svg" %}'" />
+                    {% else %}
+                        <img src="{{ doctor.default_image_url }}" class="card-img-top doctor-img" alt="{{ doctor.doctor_name }}" onerror="this.onerror=null;this.src='{% static "images/doctor-placeholder.svg" %}'" />
+                    {% endif %}
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title mb-1">{{ doctor.doctor_name }}</h5>
+                            <p class="text-primary mb-2 small fw-semibold">{{ doctor.specialization }}</p>
+                            <p class="small text-muted mb-1"><i class="bi bi-briefcase me-2"></i>Experience: {{ doctor.experience }}</p>
+                            <p class="small text-muted mb-3"><i class="bi bi-clock me-2"></i>Availability: {{ doctor.availability|default:'Flexible' }}</p>
+                            <p class="description-text mb-3">{{ doctor.description }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <span class="fw-bold text-dark" style="font-size: 1.1rem;">₹{{ doctor.consultation_fee }}</span>
+                            <a href="{% url 'doctor_detail' doctor.id %}" class="btn btn-primary btn-sm px-3">Book</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">No doctors found. Please adjust your search criteria.</div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'booking/base.html' %}
+{% load static %}
+{% block title %}{{ doctor.doctor_name }} | Health Nova{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                {% if doctor.profile_image %}
+                    <img src="{{ doctor.profile_image.url }}" class="card-img-top" alt="{{ doctor.doctor_name }}" onerror="this.onerror=null;this.src='{% static "images/doctor-placeholder.svg" %}'" />
+                {% else %}
+                    <img src="{{ doctor.default_image_url }}" class="card-img-top" alt="{{ doctor.doctor_name }}" onerror="this.onerror=null;this.src='{% static "images/doctor-placeholder.svg" %}'" />
+                {% endif %}
+                <div class="card-body">
+                    <h3 class="card-title">{{ doctor.doctor_name }}</h3>
+                    <p class="text-primary mb-2">{{ doctor.specialization }}</p>
+                    <p class="small text-muted mb-1">Qualification: {{ doctor.qualification }}</p>
+                    <p class="small text-muted mb-1">Experience: {{ doctor.experience }}</p>
+                    <p class="small text-muted mb-1">Availability: {{ doctor.availability|default:'Flexible' }}</p>
+                    <p class="fw-semibold mb-0">Consultation fee: ₹{{ doctor.consultation_fee }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 p-4">
+                <h4>About Doctor</h4>
+                <p class="text-muted">{{ doctor.description|default:'A caring professional dedicated to exceptional patient care.' }}</p>
+                <a class="btn btn-primary" href="{% url 'book_appointment' doctor.id %}">Book Appointment</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+*.sqlite3
+db.sqlite3
+/media/
+/staticfiles/
+.DS_Store
+*.log
+__pycache__/
+*.pot
+*.py[cod]
+*$py.class
+
+# Django cache
+*.sqlite3-journal
+
+# VS Code
+.vscode/

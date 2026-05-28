@@ -1,0 +1,72 @@
+{% extends 'booking/base.html' %}
+{% block title %}Postpone or Edit Appointment | Health Nova{% endblock %}
+{% block content %}
+<section class="py-5" style="max-width: 600px; margin: 0 auto;">
+    <div class="card shadow-lg border-0 p-4" style="border-radius: 16px;">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-1">Postpone / Edit Appointment</h2>
+            <p class="text-muted">Reschedule dates, adjust hours, or edit symptom details for the patient.</p>
+        </div>
+
+        <div class="alert alert-light border d-flex align-items-center mb-4 p-3" style="border-radius: 12px;">
+            <div class="me-3">
+                <i class="bi bi-calendar2-week-fill fs-2 text-primary"></i>
+            </div>
+            <div>
+                <h6 class="fw-bold mb-0">Patient: {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</h6>
+                <p class="small text-muted mb-0">Doctor Assigned: {{ appointment.doctor.doctor_name }} ({{ appointment.doctor.specialization }})</p>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-secondary">Appointment Date</label>
+                    {{ form.appointment_date }}
+                    {% if form.appointment_date.errors %}
+                        <div class="text-danger small mt-1">{{ form.appointment_date.errors.as_text }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-secondary">Appointment Time</label>
+                    {{ form.appointment_time }}
+                    {% if form.appointment_time.errors %}
+                        <div class="text-danger small mt-1">{{ form.appointment_time.errors.as_text }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary">Status</label>
+                {{ form.status }}
+                {% if form.status.errors %}
+                    <div class="text-danger small mt-1">{{ form.status.errors.as_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-secondary">Contact Number</label>
+                {{ form.contact_number }}
+                {% if form.contact_number.errors %}
+                    <div class="text-danger small mt-1">{{ form.contact_number.errors.as_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold text-secondary">Symptoms / Notes</label>
+                {{ form.symptoms }}
+                {% if form.symptoms.errors %}
+                    <div class="text-danger small mt-1">{{ form.symptoms.errors.as_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-between gap-3">
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-light flex-grow-1 py-2" style="border-radius: 8px;">Cancel</a>
+                <button type="submit" class="btn btn-primary flex-grow-1 py-2" style="border-radius: 8px;">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

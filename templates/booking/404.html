@@ -1,0 +1,15 @@
+{% extends 'booking/base.html' %}
+{% block title %}Page not found | Health Nova{% endblock %}
+{% block content %}
+<section class="py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 p-5">
+                <h1 class="display-4 fw-bold">404</h1>
+                <p class="lead text-muted">Sorry, the page you are looking for cannot be found.</p>
+                <a class="btn btn-primary" href="{% url 'home' %}">Return Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
